@@ -1,78 +1,184 @@
 import Head from "next/head";
 import io from "socket.io-client";
-import { useEffect } from "react";
-
-import styles from "../styles/Home.module.css";
+import { useEffect, useState } from "react";
+import styled from "@emotion/styled";
+import { keyframes, css } from "@emotion/react";
+import { Button, Flex, Input, Heading } from "@chakra-ui/react";
+import { VFXSpan } from "react-vfx";
 
 let socket = io("https://icm-socket.herokuapp.com", {
   transports: ["websocket", "polling", "flashsocket"],
 });
 
 export default function Home() {
-  useEffect(() => {}, []);
+  const [textValue, updateTextValue] = useState("");
+  useEffect(() => {
+    console.log(socket);
+  }, []);
   socket.on("connect", function () {
     console.log("connected");
-    socket.emit("data", "smile");
+    socket.emit("emoji", "smile");
   });
+  const handleSubmit = () => {
+    socket.emit("text", textValue);
+  };
 
+  const pushButton = (command) => {
+    socket.emit("emoji", command);
+  };
   return (
-    <div className={styles.container}>
+    <Main
+      css={css`
+        animation: ${bgAnime} 5s ease infinite;
+      `}
+    >
       <Head>
-        <title>Create Next App</title>
+        <title>ICM Audience</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+        flexWrap="wrap"
+      >
+        <Flex
+          flexWrap="wrap"
+          alignItems="center"
+          justifyContent="center"
+          width="80%"
         >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+          <Heading>
+            🤟
+            <VFXSpan
+              shader="rainbow"
+              style={{ fontSize: "40px", color: "#fff", fontWeight: "bold" }}
+            >
+              Party Time!!!
+            </VFXSpan>
+            🤟
+          </Heading>
+
+          <Input
+            type="text"
+            value={textValue}
+            onChange={(e) => updateTextValue(e.target.value)}
+            width="100%"
+            m={2}
+            color="#fff"
+          />
+          <Button onClick={handleSubmit} colorScheme="pink" marginTop="">
+            Send!!
+          </Button>
+        </Flex>
+        <Flex
+          flexWrap="wrap"
+          alignItems="center"
+          justifyContent="center"
+          width="80%"
+        >
+          <Button
+            m={3}
+            variant="solid"
+            colorScheme="purple"
+            onClick={() => pushButton("hi")}
+          >
+            👋
+          </Button>
+          <Button
+            m={3}
+            variant="solid"
+            colorScheme="purple"
+            onClick={() => pushButton("hoo")}
+          >
+            🤟
+          </Button>
+          <Button
+            m={3}
+            variant="solid"
+            colorScheme="purple"
+            onClick={() => pushButton("yay")}
+          >
+            🤘
+          </Button>
+          <Button
+            m={3}
+            variant="solid"
+            colorScheme="purple"
+            onClick={() => pushButton("glass")}
+          >
+            😎
+          </Button>
+          <Button
+            m={3}
+            variant="solid"
+            colorScheme="purple"
+            onClick={() => pushButton("pretty")}
+          >
+            😍
+          </Button>
+          <Button
+            m={3}
+            variant="solid"
+            colorScheme="purple"
+            onClick={() => pushButton("shine")}
+          >
+            ✨
+          </Button>
+          <Button
+            m={3}
+            variant="solid"
+            colorScheme="purple"
+            onClick={() => pushButton("heart")}
+          >
+            💗
+          </Button>
+          <Button
+            m={3}
+            variant="solid"
+            colorScheme="purple"
+            onClick={() => pushButton("poop")}
+          >
+            💩
+          </Button>
+          <Button
+            m={3}
+            variant="solid"
+            colorScheme="purple"
+            onClick={() => pushButton("horn")}
+          >
+            📣
+          </Button>
+          <Button
+            m={3}
+            variant="solid"
+            colorScheme="purple"
+            onClick={() => pushButton("scream")}
+          >
+            😱
+          </Button>
+        </Flex>
+      </Flex>
+    </Main>
   );
 }
+const bgAnime = keyframes`
+    0% {
+      background-position:0% 0%
+    }
+    50%{background-position:93% 100%}
+    100%{background-position:0% 0%}
+`;
+
+const Main = styled.div`
+  padding: 5rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(143deg, #bd29ed, #309dff, #ff30e0);
+  background-size: 600% 600%;
+  animation: ${bgAnime} 30s infinite;
+`;

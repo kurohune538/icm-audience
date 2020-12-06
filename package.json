@@ -15,6 +15,7 @@
     "next": "10.0.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-vfx": "^0.4.1",
     "socket.io-client": "^3.0.3"
   }
 }
